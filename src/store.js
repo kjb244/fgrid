@@ -22,9 +22,10 @@ export default new Vuex.Store({
     getFruits: function(){
         return new Promise((resolve) =>{
           const fruitArr = [
-              {name: 'Apple', icon: 'https://img.icons8.com/ios/20/000000/apple.png'},
-              {name: 'Bananna', icon: 'https://img.icons8.com/ios/20/000000/apple.png'},
-              {name: 'Mango', icon: 'https://img.icons8.com/ios/20/000000/apple.png'},
+              {name: 'Apple', icon: 'https://img.icons8.com/doodle/18/000000/apple.png'},
+              {name: 'Banana', icon: 'https://img.icons8.com/color/18/000000/banana.png'},
+              {name: 'Blueberry', icon: 'https://img.icons8.com/color/18/000000/blueberry.png'},
+              {name: 'Mango', icon: 'https://img.icons8.com/fluency/18/000000/mango.png'},
           ];
           //simulate server call with timeout
           setTimeout(() =>{

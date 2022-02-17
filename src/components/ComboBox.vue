@@ -2,7 +2,7 @@
     <section>
         <b-row>
             <b-col sm="12" md="5">
-                <div class="input-wrapper" @blur="alert()" v-bind:class="{ focused: textInput.focused }">
+                <div class="input-wrapper" v-bind:class="{ focused: textInput.focused }">
 
                     <input type="text"
                        @focus="textInputFocused"
@@ -15,7 +15,7 @@
                         <div  v-for="(fruit, index) in fruitData" :key="index" >
                             <div class="fruit-div" v-if="fruit.visible" @click="fruitClicked(index)">
                                 <img :src="fruit.icon"/>
-                                <div>{{fruit.name}}</div>
+                                <div class="fruit-name">{{fruit.name}}</div>
                             </div>
                         </div>
                     </div>
@@ -136,13 +136,13 @@
 
     .fruit-div{
         display: flex;
-        margin-top: 8px;
-        padding-left: 6px;
-        padding-top: 2px;
-        padding-bottom: 4px;
+        padding: 8px 0 8px 8px;
     }
     .fruit-div img{
         margin-right: 8px;
+    }
+    .fruit-div .fruit-name:hover{
+        cursor: context-menu;
     }
 
     .fruit-div:hover{
