@@ -5,11 +5,13 @@
                 <div class="input-wrapper" v-bind:class="{ focused: textInput.focused }">
 
                     <input type="text"
-                       @focus="textInputFocused"
-                       @blur="textInputBlurred"
-                       @input="inputType"
-                       v-model="textInput.text"
-                       :placeholder="textInput.placeholder"/>
+                        @focus="textInputFocused"
+                        @blur="textInputBlurred"
+                        @input="inputType"
+                        v-model="textInput.text"
+                        :placeholder="textInput.placeholder"
+                        :aria-label="textInput.ariaLabel"
+                    />
 
                     <div v-if="textInput.focused" class="fruit-div-parent">
                         <div  v-for="(fruit, index) in fruitData" :key="index" >
@@ -27,7 +29,6 @@
 </template>
 
 <script>
-    import Vue from 'vue';
     import { mapActions } from 'vuex';
 
 
@@ -41,6 +42,7 @@
                 textInput: {
                     text: '',
                     placeholder: 'Choose a Fruit:',
+                    ariaLabel: 'Fruit picker input. Navigate up and down to hear suggested matches after typing in partial matches',
                     focused: false,
                 }
             }
@@ -62,15 +64,19 @@
             ...mapActions([
                 'getFruits',
             ]),
-            inputType: function(){
+            filterFruits: function(){
                 const text = this.textInput.text;
                 this.fruitData.forEach((e) =>{
-                   if (e.name.toLowerCase().includes(text.toLowerCase())){
-                       e.visible=true;
-                   } else {
-                       e.visible = false;
-                   }
+                    if (e.name.toLowerCase().includes(text.toLowerCase())){
+                        e.visible = true;
+                    } else {
+                        e.visible = false;
+                    }
                 });
+            },
+            inputType: function(){
+                this.filterFruits();
+
             },
             fruitClicked: function(index){
                 const fruit = this.fruitData[index];
@@ -78,15 +84,8 @@
                 this.textInput.focused = false;
             },
             textInputFocused: function(){
-                this.textInput.focused=true;
-                const text = this.textInput.text;
-                this.fruitData.forEach((e) =>{
-                    if (e.name.toLowerCase().includes(text.toLowerCase())){
-                        e.visible=true;
-                    } else {
-                        e.visible = false;
-                    }
-                });
+                this.textInput.focused = true;
+                this.filterFruits();
             },
             textInputBlurred: function(){
                 const fruitVisible = this.fruitData.some(e => e.visible === true);
@@ -96,7 +95,7 @@
                     this.textInput.text = '';
                 } else {
                     //TODO find better way to do this
-                    setTimeout((e) => {
+                    setTimeout(() => {
                         if(this.textInput.text.length === 0){
                             this.textInput.focused = false;
                         }
@@ -110,9 +109,6 @@
 </script>
 
 <style scoped>
-    .input-wrapper{
-
-    }
     .input-wrapper.focused{
         border: 2px solid #a0a0e0;
         border-radius: 7px;
@@ -138,9 +134,11 @@
         display: flex;
         padding: 8px 0 8px 8px;
     }
+
     .fruit-div img{
         margin-right: 8px;
     }
+
     .fruit-div .fruit-name:hover{
         cursor: context-menu;
     }
