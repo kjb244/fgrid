@@ -1,7 +1,7 @@
 <template>
     <section>
         <b-row>
-            <b-col sm="12" md="5">
+            <b-col sm="12">
                 <div class="input-wrapper" :class="{ focused: textInput.focused }">
 
                     <input type="text"
@@ -68,6 +68,26 @@
                 this.fruitData = modifiedPayload;
             });
         },
+        /**
+         * Emit input event so parent can be updates on v-model
+         * Only pass the fruit if they have selected it; else pass a blank string
+         */
+        watch:{
+            'textInput.focused': function(focused){
+                let rtnVal = '';
+                //if we're not focused then the may have clicked a fruit but we still need to check it matches
+                //since they could have just typed it and focused out but not selected it
+                if (!focused){
+                    //if we have an exact match on name (case sensitive) then they have selected it
+                    const fruitMatch = this.fruitData.find(e => e.name === this.textInput.text);
+                    if (fruitMatch) {
+                        rtnVal = this.textInput.text;
+                    }
+                }
+                this.$emit('input', rtnVal);
+            }
+        },
+
         methods:{
             /**
              * From the store bring in the getFruits ajax promise
@@ -126,7 +146,6 @@
                               prevFruitArr[prevFruitArr.length-1].selectedKeyBoard = true;
                           }
                       }
-
                   }
               } else if (keyCode === enterKey){
                   if (fruitIndexCurrentlySelected > -1){
@@ -135,7 +154,6 @@
                       this.textInput.text = fruits[fruitIndexCurrentlySelected].name;
                       this.textInput.focused = false;
                       this.$refs.textbox.blur();
-
                   }
               }
             },
