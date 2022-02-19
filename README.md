@@ -9,12 +9,12 @@
 
 <br><br>
 
-##ComboBox Component
+## ComboBox Component
 
-###About
+### About
 Creates a combobox - an input text and a drop down in one. Clicking in the box will expand all elements - allowing the user to select one. If the user types in the field it will filter the results (which then can be selected).
 
-###Usage
+### Usage
 Import in your script
 ```    
 import ComboBox from "../components/ComboBox.vue";
@@ -33,7 +33,7 @@ Add it to template
 ```
 
 
-###Considerations
+### Considerations
 <ul>
     <li>Dropdown of fruits is populated via ajax call in component; possibly we can pass in a prop to handle this in future</li>
     <li>We only emit input fruit name if the fruit is selected, else it will pass "" to parent</li>
